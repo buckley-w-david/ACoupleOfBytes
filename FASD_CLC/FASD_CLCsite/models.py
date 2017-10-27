@@ -9,7 +9,7 @@ class User(models.Model):
 	uTypes = (('Client','Client'),('Staff','Staff'),('Admin','Admin'),('Friends/Family','Friends/Family'))
 	username = models.CharField(max_length=20)
 	password = models.CharField(max_length=100)
-	userType = models.CharField(max_length=13)
+	userType = models.CharField(max_length=13, choices=uTypes)
 	sessionKey = models.CharField(max_length=30)
 	def __str__(self):
 		return self.username+", "+self.userType
