@@ -13,3 +13,9 @@ class User(models.Model):
 	sessionKey = models.CharField(max_length=30)
 	def __str__(self):
 		return self.username+", "+self.userType
+
+@python_2_unicode__compatible
+class Medication(models.Model):
+	medicationName=models.CharField(max_length=100)
+	def __str__(self):
+		return self.medicationName
