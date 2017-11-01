@@ -54,6 +54,9 @@ coverage.xml
 *.log
 local_settings.py
 
+# Don't put your database in a git repo dummy
+*.sqlite3
+
 # Flask stuff:
 instance/
 .webassets-cache
