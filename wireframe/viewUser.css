@@ -1,14 +1,14 @@
 .searchBar {
-	
-	width:100%;
+
+	width:50%;
 	height:100%;
 	display: block;
-	position: absolute;
+
 }
 input[type=text] {
 	top:10px;
-	left:21%;
-	width:50%;
+	left:32%;
+	width:30%;
 	box-sizing: border-box;
 	border: 2px solid #ccc;
 	font-size: 16px;

@@ -20,59 +20,68 @@
     <link href="viewUser.css" rel="stylesheet">
   </head>
 
+<!--
+<div class="searchBar">
+  <input type="text" name="search" placeholder="Search for user...">
+</div>
+-->
+
   <body>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Community Living Cambridge</a>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./client.html">CLC App</a>
         </div>
         <div class="searchBar">
           <input type="text" name="search" placeholder="Search for user...">
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <div class="btn-group" role="group">
-            <button id="med1drop" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Bob Smith
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#">Account Settings</a></li>
-              <li><a href="#">Profile Settings</a></li>
-              <li><a href="#">Help</a></li>
-              <li><a href="#">Log out</a></li>
-            </ul>
-          </div>
-        </div>
+          <form class="navbar-form navbar-right">
+              <div class="btn-group" role="group">
+                  <button id="med1drop" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Bob Smith
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Account Settings</a></li>
+                    <li><a href="#">Profile Settings</a></li>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Log out</a></li>
+                  </ul>
+                </div>
+          </form>
+        </div><!--/.navbar-collapse -->
       </div>
-      
     </nav>
+
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>Hello, Bob!</h1>
+        <h1>Guy McDude</h1>
       </div>
     </div>
 
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <image src="stickboy.png" height=150px>
+        <input type="text" name="description" value="Description of Guy McDude..." readonly="readonly" style="height:100px;position:relative; left:0px;">
+        <button type="" onclick="sendRequest('Guy McDude')" style="height:70px;position:relative; left:50%; top:10px;">Send Request! </button>
+      <hr>
       <footer>
-        <p>&copy; 2016 Company, Inc.</p>
+        <p>&copy; 2017 A Couple of Bytes</p>
       </footer>
     </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
     <script>
-      function woo(){
-        alert("Woo");
-      }
-      function boo(){
-        alert("Boo");
+      function sendRequest(user) {
+        alert("Request sent to "+user+" :)");
       }
     </script>
   </body>
