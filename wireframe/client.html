@@ -41,14 +41,14 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <div class="col-sm-3 col-md-3">
-                <form class="navbar-form" role="search">
+                <div class="navbar-form" role="search">
                 <div class="input-group">
                     <input id="searchbar" type="text" class="form-control" placeholder="Search for users..." name="q" style="width:750px;">
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="button" onclick="searchUser()"><i class="glyphicon glyphicon-search"></i></button>
+                        <button id="searchButton" class="btn btn-default" type="button" onclick="searchUser()"><i class="glyphicon glyphicon-search"></i></button>
                     </div>
                 </div>
-                </form>
+              </div>
             </div>
           <form class="navbar-form navbar-right">
               <button id="notif" type="button" class="btn btn-warning" data-toggle="popover" data-placement="bottom" title="Notifications" data-content="You have to take Medication 2 in 15 minutes!">
@@ -63,7 +63,7 @@
                     <li><a href="404.html">Account Settings</a></li>
                     <li><a href="404.html">Profile Settings</a></li>
                     <li><a href="404.html">Help</a></li>
-                    <li><a href="404.html">Log out</a></li>
+                    <li><a href="home.html">Log out</a></li>
                   </ul>
                 </div>
           </form>
@@ -81,7 +81,7 @@
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-md-4">
+        <div id="medsColumn" class="col-md-4">
           <h2>My Medications</h2>
           <div id="med1Section" class="btn-group" role="group" aria-label="...">
               <button id="1" type="button" data-button="med1" class="btn btn-default" data-toggle="modal" data-target="#editModal" style="width:150px;">Medication 1<br /><u>Edit</u></button>
@@ -93,52 +93,11 @@
                 </button>
                 <ul class="dropdown-menu">
                   <li><a id="med1" data-toggle="modal" onclick="tookMed('med1')">Took</a></li>
-                  <li><a data-id="med1" data-toggle="modal" href="#recordModal">Did not take</a></li>
+                  <li><a id="med1DidNot" data-id="med1" data-toggle="modal" href="#recordModal">Did not take</a></li>
                 </ul>
               </div>
           </div>
-          <div id="med2Section" class="btn-group" role="group" aria-label="...">
-              <button id="2" type="button" data-button="med2" class="btn btn-default" data-toggle="modal" data-target="#editModal" style="width:150px;">Medication 2<br /><u>Edit</u></button>
-            
-              <div class="btn-group" role="group">
-                <button id="med2drop" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height:54px">
-                  Record
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a id="med2" data-toggle="modal" onclick="tookMed('med2')">Took</a></li>
-                    <li><a data-id="med2" data-toggle="modal" href="#recordModal">Did not take</a></li>
-                </ul>
-              </div>
-          </div>
-          <div id="med3Section" class="btn-group" role="group" aria-label="...">
-              <button id="dsfadf" type="button" data-button="med3" class="btn btn-default" data-toggle="modal" data-target="#editModal" style="width:150px;">Medication 3<br /><u>Edit</u></button>
-            
-              <div class="btn-group" role="group">
-                <button id="med3drop" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height:54px">
-                  Record
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a id="med3" data-toggle="modal" onclick="tookMed('med3')">Took</a></li>
-                    <li><a data-id="med3" data-toggle="modal" href="#recordModal">Did not take</a></li>
-                </ul>
-              </div>
-          </div>
-          <div id="med4Section" style="display:none" class="btn-group" role="group" aria-label="...">
-              <button id="4" type="button" data-button="med4" class="btn btn-default" data-toggle="modal" data-target="#editModal" style="width:150px;">Medication 4<br /><u>Edit</u></button>
-            
-              <div class="btn-group " role="group">
-                <button id="med4drop" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height:54px">
-                  Record
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a id="med4" data-toggle="modal" onclick="tookMed('med4')">Took</a></li>
-                    <li><a data-id="med4" data-toggle="modal" href="#recordModal">Did not take</a></li>
-                </ul>
-              </div>
-          </div>
+          
           <br />
 
           <button type="button" data-button="add" class="btn btn-default btn-primary" data-toggle="modal" data-target="#addModal">Add Medication</button>
@@ -177,6 +136,7 @@
                       <h4>Name</h4>
                       <input id="medName" type="text" placeholder="Medication Name" class="form-control">
                     </div>
+                    <div id="dateTimeSection1">
                   <div class="dropdown">
                       <h4>Day to take it</h4>
                       <label class="checkbox-inline"><input type="checkbox" value="">Every Day</label>
@@ -191,8 +151,11 @@
                     <br />
                   <div class="form-group">
                       <h4>Time</h4>
-                    <input type="text" placeholder="Time to take it" class="form-control">
+                    <input id="timeBox1" type="text" placeholder="Time to take it" class="form-control">
+                    
                   </div>
+                  </div>
+                  <button type="button" class="btn btn-default" onclick="addTime()">Add Time</button>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal" onclick="addMed()">Save</button>
@@ -280,29 +243,68 @@
 
     <script>
       var clickedButton;
+      var times;
+      var meds;
+      var addModalClone;
 
       $(document).ready(function(){
         $('[data-toggle="popover"]').popover(); 
+        times = 1;
+        meds = 1;
+        addModalClone = $('#addModal').html();
+        for(meds=1; meds<3; meds++){
+          $clone = $('#med' + meds + 'Section').clone(true).attr('id', 'med' + (meds + 1) + 'Section');
+          $clone.find('#' + meds).attr('data-button', 'med' + (meds + 1));
+          $clone.find('#' + meds).html('Medication ' + (meds + 1) + "<br /><u>Edit</u>");
+          $clone.find('#' + meds).attr('id', (meds + 1));
+          $clone.find('#med' + meds).attr('onclick', "tookMed('med" + (meds + 1) + "')");
+          $clone.find('#med' + meds).attr('id', 'med' + (meds + 1));
+          $clone.find('#med' + meds + 'DidNot').attr('data-id', 'med' + (meds + 1));
+          $clone.find('#med' + meds + 'DidNot').attr('id', 'med' + (meds + 1) + 'DidNot');
+          $clone.find('#med' + meds + 'drop').attr('id', 'med' + (meds + 1) + 'drop');
+          $('#med' + meds + 'Section').after($clone);
+        }
       });
+
+      $('.modal').on('hidden.bs.modal', function(e)
+        { 
+          $('#addModal').html(addModalClone);
+          times = 1;
+        }) ;
 
       $('.modal').on('show.bs.modal', function (e) {
         //var $trigger = $(e.relatedTarget);
         if($(e.relatedTarget).data('button') != undefined)
           clickedButton = $(e.relatedTarget).data('button');
         else
-        clickedButton = $(e.relatedTarget).data('id');
+          clickedButton = $(e.relatedTarget).data('id');
       })
 
       function addMed(){
-        $('#med4Section').show();
+        
+        //$('#med4Section').show();
         alert("You added " + $("#medName").val());
-        $('#4').html($("#medName").val() + "<br /><u>Edit</u>");
+
+        $clone = $('#med' + meds + 'Section').clone(true).attr('id', 'med' + (meds + 1) + 'Section');
+        $clone.find('#' + meds).attr('data-button', 'med' + (meds + 1));
+        $clone.find('#' + meds).attr('id', (meds + 1));
+        $clone.find('#med' + meds).attr('onclick', "tookMed('med" + (meds + 1) + "')");
+        $clone.find('#med' + meds).attr('id', 'med' + (meds + 1));
+        $clone.find('#med' + meds + 'DidNot').attr('data-id', 'med' + (meds + 1));
+        $clone.find('#med' + meds + 'DidNot').attr('id', 'med' + (meds + 1) + 'DidNot');
+        $clone.find('#med' + meds + 'drop').attr('id', 'med' + (meds + 1) + 'drop');
+        $('#med' + meds + 'Section').after($clone);
+        $clone.find('#med' + meds + 'drop').prop('disabled', false);
+        meds++;
+        $('#' + meds).html($("#medName").val() + "<br /><u>Edit</u>");
+
       }
       function deleteMed(){
         $('#' + clickedButton + 'Section').hide();
       }
       function recordedMed(){
-        alert("You did not take medication " + clickedButton[3] + " :( We let your connections know.");
+        alert("You did not take " + $('#' + clickedButton[3]).text().slice(0,-4) + " :( We let your connections know.");
+        //alert("You did not take medication " + clickedButton[3] + " :( We let your connections know.");
         $('#' + clickedButton + "drop").prop('disabled', true);
         if(clickedButton == "med2") {
           clearNotifs();
@@ -311,7 +313,7 @@
       function tookMed(med) {
         $('.dropdown.open').removeClass('open');
         $('#' + med + "drop").prop('disabled', true);
-        alert("You took medication " + med[3] + " :) We let your connections know.");
+        alert("You took medication " + $('#' + med[3]).text().slice(0,-4) + " :) We let your connections know.");
       }
 
       function showDay(){
@@ -366,6 +368,19 @@
       else{
         alert("We couldn't find " + $('#searchbar').val() + ". Try searching for someone else.");
       }
+    }
+
+    $("#searchbar").keyup(function(event) {
+      if (event.keyCode === 13) {
+          $("#searchButton").click();
+      }
+    });
+
+    function addTime(){
+      $timeClone = $('#dateTimeSection' + times).clone(true).attr('id', 'dateTimeSection' + (times + 1));
+      $('#dateTimeSection' + times).after($timeClone);
+      $('#dateTimeSection' + times).after("<hr>");
+      times++;
     }
 
     </script>
