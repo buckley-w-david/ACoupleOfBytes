@@ -177,6 +177,7 @@
                 <h4 class="modal-title">Edit Medication</h4>
               </div>
               <div class="modal-body">
+                <div id="dateTimeSectionEdit1">
                   <div class="dropdown">
                     <h4>Day to take it</h4>
                       <label class="checkbox-inline"><input type="checkbox" value="">Every Day</label>
@@ -192,6 +193,8 @@
                   <div class="form-group">
                     <input type="text" placeholder="Time" class="form-control">
                   </div>
+                  </div>
+                  <button type="button" class="btn btn-default" onclick="addEditTime()">Add Time</button>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
@@ -246,12 +249,14 @@
       var times;
       var meds;
       var addModalClone;
+      var editModalClone;
 
       $(document).ready(function(){
         $('[data-toggle="popover"]').popover(); 
         times = 1;
         meds = 1;
         addModalClone = $('#addModal').html();
+        editModalClone = $('#editModal').html();
         for(meds=1; meds<3; meds++){
           $clone = $('#med' + meds + 'Section').clone(true).attr('id', 'med' + (meds + 1) + 'Section');
           $clone.find('#' + meds).attr('data-button', 'med' + (meds + 1));
@@ -269,6 +274,7 @@
       $('.modal').on('hidden.bs.modal', function(e)
         { 
           $('#addModal').html(addModalClone);
+          $('#editModal').html(editModalClone);
           times = 1;
         }) ;
 
@@ -300,7 +306,9 @@
 
       }
       function deleteMed(){
+        alert("You deleted " + $('#' + clickedButton[3]).text().slice(0,-4) + ". We let your connections know.");
         $('#' + clickedButton + 'Section').hide();
+        meds = meds - 1;
       }
       function recordedMed(){
         alert("You did not take " + $('#' + clickedButton[3]).text().slice(0,-4) + " :( We let your connections know.");
@@ -313,7 +321,7 @@
       function tookMed(med) {
         $('.dropdown.open').removeClass('open');
         $('#' + med + "drop").prop('disabled', true);
-        alert("You took medication " + $('#' + med[3]).text().slice(0,-4) + " :) We let your connections know.");
+        alert("You took " + $('#' + med[3]).text().slice(0,-4) + " :) We let your connections know.");
       }
 
       function showDay(){
@@ -380,6 +388,13 @@
       $timeClone = $('#dateTimeSection' + times).clone(true).attr('id', 'dateTimeSection' + (times + 1));
       $('#dateTimeSection' + times).after($timeClone);
       $('#dateTimeSection' + times).after("<hr>");
+      times++;
+    }
+
+    function addEditTime(){
+      $timeClone = $('#dateTimeSectionEdit' + times).clone(true).attr('id', 'dateTimeSectionEdit' + (times + 1));
+      $('#dateTimeSectionEdit' + times).after($timeClone);
+      $('#dateTimeSectionEdit' + times).after("<hr>");
       times++;
     }
 
