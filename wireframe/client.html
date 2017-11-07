@@ -178,7 +178,7 @@
                       <input id="medName" type="text" placeholder="Medication Name" class="form-control">
                     </div>
                   <div class="dropdown">
-                      <h4>Day</h4>
+                      <h4>Day to take it</h4>
                       <label class="checkbox-inline"><input type="checkbox" value="">Every Day</label>
                       <label class="checkbox-inline"><input type="checkbox" value="">Sun</label>
                       <label class="checkbox-inline"><input type="checkbox" value="">Mon</label>
@@ -215,7 +215,7 @@
               </div>
               <div class="modal-body">
                   <div class="dropdown">
-                    <h4>Day</h4>
+                    <h4>Day to take it</h4>
                       <label class="checkbox-inline"><input type="checkbox" value="">Every Day</label>
                       <label class="checkbox-inline"><input type="checkbox" value="">Sun</label>
                       <label class="checkbox-inline"><input type="checkbox" value="">Mon</label>
@@ -295,6 +295,7 @@
 
       function addMed(){
         $('#med4Section').show();
+        alert("You added " + $("#medName").val());
         $('#4').html($("#medName").val() + "<br /><u>Edit</u>");
       }
       function deleteMed(){
@@ -350,19 +351,22 @@
       });
 
       $('body').on('click', function (e) {
-    $('[data-toggle=popover]').each(function () {
-        // hide any open popovers when the anywhere else in the body is clicked
-        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-            $(this).popover('hide');
-        }
-    });
+        $('[data-toggle=popover]').each(function () {
+          // hide any open popovers when the anywhere else in the body is clicked
+          if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+              $(this).popover('hide');
+          }
+        });
+      });
 
     function searchUser(){
-      if($('#searchbar').val().toLowerCase() == "jane smith"){
+      if($('#searchbar').val().toLowerCase() == "guy mcdude"){
         location.href = "viewUser.html";
       }
+      else{
+        alert("We couldn't find " + $('#searchbar').val() + ". Try searching for someone else.");
+      }
     }
-});
 
     </script>
   </body>
