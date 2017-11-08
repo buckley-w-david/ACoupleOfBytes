@@ -83,25 +83,43 @@
       <!-- Example row of columns -->
       <div class="row">
         <image src="stickboy.png" height=150px>
-        <input type="text" name="description" value="Description of Jane Smith..." readonly="readonly" style="height:100px;position:relative; left:0px;">
+        <input type="text" name="description" value="Description of Jane Smith..." readonly="readonly" style="height:100px;position:relative; left:0px; width:200px;">
         <button type="" onclick="sendRequest('Jane Smith')" style="height:70px;position:relative; left:50%; top:10px;">Send Request! </button>
       <hr>
       <footer>
         <p>&copy; 2017 A Couple of Bytes</p>
       </footer>
     </div> <!-- /container -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
     <script>
+      $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+      });
+
+      $("#searchbar").keyup(function(event) {
+        if (event.keyCode === 13) {
+          $("#searchButton").click();
+        }
+      });
+
       function sendRequest(user) {
         alert("Request sent to "+user+" :)");
       }
       function searchUser(){
-        if($('#searchbar').val().toLowerCase() == "Jane Smith"){
+        if($('#searchbar').val().toLowerCase() == "jane smith"){
           location.href = "viewUser.html";
         }
         else{
           alert("We couldn't find " + $('#searchbar').val() + ". Try searching for someone else.");
         }
       }
+
+
     </script>
   </body>
 </html>
