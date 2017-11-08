@@ -86,7 +86,7 @@
           <h2>My Medications</h2>
           <div id="med1Section" class="btn-group" role="group" aria-label="...">
               <button id="1" type="button" data-button="med1" class="btn btn-default" data-toggle="modal" data-target="#editModal" style="width:150px;">Medication 1<br /><u>Edit</u></button>
-            
+
               <div class="btn-group" role="group">
                 <button id="med1drop" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height:54px">
                   Record
@@ -98,7 +98,7 @@
                 </ul>
               </div>
           </div>
-          
+
           <br />
 
           <button type="button" data-button="add" class="btn btn-default btn-primary" data-toggle="modal" data-target="#addModal">Add Medication</button>
@@ -125,7 +125,7 @@
       <!-- Add Modal -->
       <div class="modal fade" id="addModal" role="dialog">
           <div class="modal-dialog">
-          
+
             <!-- Modal content-->
             <div class="modal-content">
               <div class="modal-header">
@@ -153,7 +153,7 @@
                   <div class="form-group">
                       <h4>Time</h4>
                     <input id="timeBox1" type="text" placeholder="Time to take it" class="form-control">
-                    
+
                   </div>
                   </div>
                   <button type="button" class="btn btn-default" onclick="addTime()">Add Time</button>
@@ -163,14 +163,14 @@
                   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
             </div>
-            
+
           </div>
         </div>
 
       <!-- Edit Modal -->
       <div class="modal fade" id="editModal" role="dialog">
           <div class="modal-dialog">
-          
+
             <!-- Modal content-->
             <div class="modal-content">
               <div class="modal-header">
@@ -203,14 +203,14 @@
                   <button type="button" class="btn btn-danger" onclick="deleteMed()" data-dismiss="modal">Delete Medication</button>
               </div>
             </div>
-            
+
           </div>
         </div>
 
       <!-- Recording Modal -->
       <div class="modal fade" id="recordModal" role="dialog">
             <div class="modal-dialog">
-            
+
               <!-- Modal content-->
               <div class="modal-content">
                 <div class="modal-header">
@@ -223,12 +223,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>                    
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="recordedMed()">I don't want to say</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="recordedMed()">Save</button>                    
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="recordedMed()">Save</button>
                 </div>
               </div>
-              
+
             </div>
           </div>
 
@@ -253,7 +253,7 @@
       var editModalClone;
 
       $(document).ready(function(){
-        $('[data-toggle="popover"]').popover(); 
+        $('[data-toggle="popover"]').popover();
         times = 1;
         meds = 1;
         addModalClone = $('#addModal').html();
@@ -273,7 +273,7 @@
       });
 
       $('.modal').on('hidden.bs.modal', function(e)
-        { 
+        {
           $('#addModal').html(addModalClone);
           $('#editModal').html(editModalClone);
           times = 1;
@@ -288,7 +288,7 @@
       })
 
       function addMed(){
-        
+
         //$('#med4Section').show();
         alert("You added " + $("#medName").val());
 
@@ -374,7 +374,7 @@
       });
 
     function searchUser(){
-      if($('#searchbar').val().toLowerCase() == "guy mcdude"){
+      if($('#searchbar').val().toLowerCase() == "jane smith"){
         location.href = "viewUser.html";
       }
       else{

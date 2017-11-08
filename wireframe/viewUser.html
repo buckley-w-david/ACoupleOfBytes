@@ -9,15 +9,15 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Jumbotron Template for Bootstrap</title>
+    <title>Jane Smith's Profile</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="jumbotron.css" rel="stylesheet">
+<!--    <link href="jumbotron.css" rel="stylesheet">-->
 
-    <link href="viewUser.css" rel="stylesheet">
+<!--    <link href="viewUser.css" rel="stylesheet">-->
   </head>
 
 <!--
@@ -37,23 +37,34 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="./client.html">CLC App</a>
-        </div>
-        <div class="searchBar">
-          <input type="text" name="search" placeholder="Search for user...">
+          <a href="#" class="navbar-left" style="padding-top:10px;padding-right:10px"><img src="logo1.png" height="30" width="30"></a>
+          <a class="navbar-brand" href="./client.html">ComLife</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+            <div class="col-sm-3 col-md-3">
+                <div class="navbar-form" role="search">
+                <div class="input-group">
+                    <input id="searchbar" type="text" class="form-control" placeholder="Search for users..." name="q" style="width:750px;">
+                    <div class="input-group-btn">
+                        <button id="searchButton" class="btn btn-default" type="button" onclick="searchUser()"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+              </div>
+            </div>
           <form class="navbar-form navbar-right">
+              <button id="notif" type="button" class="btn btn-warning" data-toggle="popover" data-placement="bottom" title="Notifications" data-content="You have to take Medication 2 in 15 minutes!">
+                  <span class="glyphicon glyphicon-exclamation-sign"></span>
+                </button>
               <div class="btn-group" role="group">
-                  <button id="med1drop" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button id="userDrop" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Bob Smith
                     <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu">
-                    <li><a href="#">Account Settings</a></li>
-                    <li><a href="#">Profile Settings</a></li>
-                    <li><a href="#">Help</a></li>
-                    <li><a href="#">Log out</a></li>
+                    <li><a href="404.html">Account Settings</a></li>
+                    <li><a href="404.html">Profile Settings</a></li>
+                    <li><a href="404.html">Help</a></li>
+                    <li><a href="home.html">Log out</a></li>
                   </ul>
                 </div>
           </form>
@@ -64,7 +75,7 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>Guy McDude</h1>
+        <h1 style="padding-top:40px">Jane Smith</h1>
       </div>
     </div>
 
@@ -72,8 +83,8 @@
       <!-- Example row of columns -->
       <div class="row">
         <image src="stickboy.png" height=150px>
-        <input type="text" name="description" value="Description of Guy McDude..." readonly="readonly" style="height:100px;position:relative; left:0px;">
-        <button type="" onclick="sendRequest('Guy McDude')" style="height:70px;position:relative; left:50%; top:10px;">Send Request! </button>
+        <input type="text" name="description" value="Description of Jane Smith..." readonly="readonly" style="height:100px;position:relative; left:0px;">
+        <button type="" onclick="sendRequest('Jane Smith')" style="height:70px;position:relative; left:50%; top:10px;">Send Request! </button>
       <hr>
       <footer>
         <p>&copy; 2017 A Couple of Bytes</p>
@@ -82,6 +93,14 @@
     <script>
       function sendRequest(user) {
         alert("Request sent to "+user+" :)");
+      }
+      function searchUser(){
+        if($('#searchbar').val().toLowerCase() == "Jane Smith"){
+          location.href = "viewUser.html";
+        }
+        else{
+          alert("We couldn't find " + $('#searchbar').val() + ". Try searching for someone else.");
+        }
       }
     </script>
   </body>
