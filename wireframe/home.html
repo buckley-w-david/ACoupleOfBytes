@@ -55,10 +55,10 @@
                                                aria-describedby="basic-addon1" id="loginUser" style="width:235px;">
                                         <input type="password" class="form-control"
                                                placeholder="Password" aria-label="Password"
-                                               aria-describedby="basic-addon1"  style="width:235px;">
+                                               aria-describedby="basic-addon1"  style="width:235px;" id="loginPass">
                                     </li>
                                     <li>
-                                        <a style="display: inline" onclick="login(document.getElementById('loginUser').value)">Submit</a><a style="display: inline" data-toggle="modal" data-target="#passModal">Forgot my password</a>
+                                        <a style="display: inline" onclick="login(document.getElementById('loginUser').value, document.getElementById('loginPass'))">Submit</a><a style="display: inline" data-toggle="modal" data-target="#passModal">Forgot my password</a>
                                     </li>
                                 </ul>
                             </div>
@@ -186,13 +186,13 @@
 
     }
 
-    function login(username) {
-        if (username === "bobsmith") {
+    function login(username, password) {
+        if (username === "bobsmith" && password === "abc123") {
             location.href = "client.html";
-        } else if (username === "staff") {
+        } else if (username === "staff" && password === "123abc") {
             location.href = "staff.html";
         } else {
-            alert("Unknown user")
+            alert("Invalid username or password.")
         }
     }
 </script>
