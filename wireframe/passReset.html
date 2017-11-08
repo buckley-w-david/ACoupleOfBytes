@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ComLife</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="home.css">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="navbar-left" style="padding-top:10px;padding-right:10px"><img src="logo1.png" height="30" width="30"></a>
+          <a class="navbar-brand" href="client.html">ComLife</a>
+        </div>
+        <div id="buttons" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <div id="login" class="navbar-collapse collapse">
+                        <form class="navbar-form navbar-right">
+                            <div class="input-group" role="group">
+                                <button id="logindrop" type="button" class="btn btn-info dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Login
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><input type="text" class="form-control"
+                                               placeholder="Username" aria-label="Username"
+                                               aria-describedby="basic-addon1" id="loginUser" style="width:235px;">
+                                        <input type="password" class="form-control"
+                                               placeholder="Password" aria-label="Password"
+                                               aria-describedby="basic-addon1"  style="width:235px;">
+                                    </li>
+                                    <li>
+                                        <a style="display: inline" onclick="login(document.getElementById('loginUser').value)">Submit</a><a style="display: inline" data-toggle="modal" data-target="#passModal">Forgot my password</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+                <li>
+                    <div id="signup" class="navbar-collapse collapse">
+                        <form class="navbar-form navbar-right">
+                            <div class="input-group" role="group">
+                                <button id="signupdrop" type="button" class="btn btn-info dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Sign up
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><input type="text" class="form-control"
+                                               placeholder="Email" aria-label="Email"
+                                               aria-describedby="basic-addon1" id="signupEmail"  style="width:235px;">
+                                        <input type="text" class="form-control"
+                                               placeholder="Username" aria-label="Username"
+                                               aria-describedby="basic-addon1"  style="width:235px;">
+                                        <input type="password" class="form-control"
+                                               placeholder="Password" aria-label="Password"
+                                               aria-describedby="basic-addon1" id="signupPass"  style="width:235px;">
+                                        <input type="password" class="form-control"
+                                               placeholder="Confirm Password" aria-label="Confirm Password"
+                                               aria-describedby="basic-addon1" id="signupconfPass"  style="width:235px;">
+                                    </li>
+                                    <li>
+                                        <a onclick="confirmSignup(document.getElementById('signupEmail').value, document.getElementById('signupPass').value, document.getElementById('signupconfPass').value)">Submit</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <input type="password" class="form-control"
+       placeholder="Password" aria-label="Password"
+       aria-describedby="basic-addon1" id="resetPass">
+
+    <input type="password" class="form-control"
+           placeholder="Confirm Password" aria-label="Confirm Password"
+           aria-describedby="basic-addon1" id="resetconfPass">
+
+    <button onclick="confirmReset(document.getElementById('resetPass').value, document.getElementById('resetconfPass').value)">Submit</button>
+    <hr>
+    <footer>
+        <p>&copy; 2017 A Couple of Bytes</p>
+    </footer>
+</div>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<script>
+    var clickedButton;
+
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+        times = 1;
+        meds = 1;
+        passClone = $('#passModal').html();
+        editModalClone = $('#editModal').html();
+    });
+
+    $('.modal').on('hidden.bs.modal', function(e)
+    {
+        $('#passModal').html(addModalClone);
+        times = 1;
+    }) ;
+
+    $('.modal').on('show.bs.modal', function (e) {
+        //var $trigger = $(e.relatedTarget);
+        if($(e.relatedTarget).data('button') != undefined)
+            clickedButton = $(e.relatedTarget).data('button');
+        else
+            clickedButton = $(e.relatedTarget).data('id');
+    })
+
+    function resetPass(email) {
+        alert("A password reset link has been sent to " + email);
+    }
+
+    function confirmSignup(email, pass, confpass) {
+        if (pass === confpass) {
+            alert("A confirmation email has been sent to " + email);
+        } else {
+            alert("Password does not match");
+        }
+
+    }
+
+    function login(username) {
+        if (username === "bobsmith") {
+            location.href = "client.html";
+        } else if (username === "staff") {
+            location.href = "staff.html";
+        } else {
+            alert("Unknown user")
+        }
+    }
+
+    function confirmReset(pass, confpass) {
+        if (pass === confpass) {
+            alert("Password successfully reset");
+            location.href = "home.html";
+        } else {
+            alert("Password does not match");
+        }
+    }
+</script>
+</body>
+<!-- Password Modal -->
+<div class="modal fade" id="passModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Password Reset</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control"
+                       placeholder="Email" aria-label="Email"
+                       aria-describedby="basic-addon1" id="modelEmail">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetPass(document.getElementById('modelEmail').value)">Reset</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+</html>

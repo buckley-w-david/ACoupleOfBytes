@@ -8,11 +8,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard</title>
+    <title>ComLife</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="home.css">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
@@ -31,15 +30,15 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="navbar-left" style="padding-top:10px;padding-right:10px"><img src="logo1.png" height="30" width="30"></a>
+          <a class="navbar-brand" href="client.html">ComLife</a>
         </div>
-        <a class="navbar-brand" href="#">CLC App</a>
         <div id="buttons" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -53,14 +52,13 @@
                                 <ul class="dropdown-menu">
                                     <li><input type="text" class="form-control"
                                                placeholder="Username" aria-label="Username"
-                                               aria-describedby="basic-addon1">
-                                        <input type="text" class="form-control"
+                                               aria-describedby="basic-addon1" id="loginUser" style="width:235px;">
+                                        <input type="password" class="form-control"
                                                placeholder="Password" aria-label="Password"
-                                               aria-describedby="basic-addon1">
+                                               aria-describedby="basic-addon1"  style="width:235px;">
                                     </li>
                                     <li>
-                                        <a style="display: inline" href="#">Submit</a><a style="display: inline"
-                                                                                         href="#">Forgot my password</a>
+                                        <a style="display: inline" onclick="login(document.getElementById('loginUser').value)">Submit</a><a style="display: inline" data-toggle="modal" data-target="#passModal">Forgot my password</a>
                                     </li>
                                 </ul>
                             </div>
@@ -78,19 +76,19 @@
                                 <ul class="dropdown-menu">
                                     <li><input type="text" class="form-control"
                                                placeholder="Email" aria-label="Email"
-                                               aria-describedby="basic-addon1">
+                                               aria-describedby="basic-addon1" id="signupEmail"  style="width:235px;">
                                         <input type="text" class="form-control"
                                                placeholder="Username" aria-label="Username"
-                                               aria-describedby="basic-addon1">
-                                        <input type="text" class="form-control"
+                                               aria-describedby="basic-addon1"  style="width:235px;">
+                                        <input type="password" class="form-control"
                                                placeholder="Password" aria-label="Password"
-                                               aria-describedby="basic-addon1">
-                                        <input type="text" class="form-control"
+                                               aria-describedby="basic-addon1" id="signupPass"  style="width:235px;">
+                                        <input type="password" class="form-control"
                                                placeholder="Confirm Password" aria-label="Confirm Password"
-                                               aria-describedby="basic-addon1">
+                                               aria-describedby="basic-addon1" id="signupconfPass"  style="width:235px;">
                                     </li>
                                     <li>
-                                        <a href="#">Submit</a>
+                                        <a onclick="confirmSignup(document.getElementById('signupEmail').value, document.getElementById('signupPass').value, document.getElementById('signupconfPass').value)">Submit</a>
                                     </li>
                                 </ul>
                             </div>
@@ -153,25 +151,73 @@
 <script>
     var clickedButton;
 
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+        times = 1;
+        meds = 1;
+        passClone = $('#passModal').html();
+        editModalClone = $('#editModal').html();
+    });
+
+    $('.modal').on('hidden.bs.modal', function(e)
+    {
+        $('#passModal').html(addModalClone);
+        times = 1;
+    }) ;
+
     $('.modal').on('show.bs.modal', function (e) {
-        var $trigger = $(e.relatedTarget);
-        clickedButton = $trigger.data('id');
+        //var $trigger = $(e.relatedTarget);
+        if($(e.relatedTarget).data('button') != undefined)
+            clickedButton = $(e.relatedTarget).data('button');
+        else
+            clickedButton = $(e.relatedTarget).data('id');
     })
 
-    function addMed() {
-        $('#med4Section').show();
+    function resetPass(email) {
+        alert("A password reset link has been sent to " + email);
     }
 
-    function recordedMed() {
-        alert("You did not take medication " + clickedButton[3] + " :(");
-        $('#' + clickedButton + "drop").prop('disabled', true);
+    function confirmSignup(email, pass, confpass) {
+        if (pass === confpass) {
+            alert("A confirmation email has been sent to " + email);
+        } else {
+            alert("Password does not match");
+        }
+
     }
 
-    function tookMed(med) {
-        $('.dropdown.open').removeClass('open');
-        $('#' + med + "drop").prop('disabled', true);
-        alert("You took medication " + med[3] + " :)");
+    function login(username) {
+        if (username === "bobsmith") {
+            location.href = "client.html";
+        } else if (username === "staff") {
+            location.href = "staff.html";
+        } else {
+            alert("Unknown user")
+        }
     }
 </script>
 </body>
+<!-- Password Modal -->
+<div class="modal fade" id="passModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Password Reset</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control"
+                       placeholder="Email" aria-label="Email"
+                       aria-describedby="basic-addon1" id="modelEmail">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetPass(document.getElementById('modelEmail').value)">Reset</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 </html>
