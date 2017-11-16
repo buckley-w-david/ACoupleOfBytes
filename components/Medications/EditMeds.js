@@ -1,27 +1,21 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image, KeyboardAvoidingView, TouchableOpacity, navigation} from 'react-native';
 import SideBar from '../sideBar/drawer';
-import {  SideMenu, List, ListItem , Header } from 'react-native-elements';
+import {  FormLabel, FormInput,SideMenu, List, ListItem , Header } from 'react-native-elements';
 import Login from '../Login/Login';
-import Cards from './cards';
 import MedsHome from '../Medications/MedicationsHome';
 import {list, MenuComponent} from '../navigationList';
 import Schedule from '../Schedule/Schedule';
-
 export default class Home extends Component {
  constructor (props) {
   super(props)
   this.state = {
     isOpen: false,
-    isLogout: false,
-    isHome: false,
-    isNotifcations: false,
-    isSchedule: false,
-    isMeds: false,
-    isMessages: false,
-    isFaF:false,
+    medName: this.props.med,
+
   }
     this.toggleSideMenu = this.toggleSideMenu.bind(this)
+    
   }
 
   onSideMenuChange (isOpen) {
@@ -55,7 +49,6 @@ export default class Home extends Component {
         })
         break;
       case 'schedule':
-      console.log("hereeee")
         this.setState({
           isSchedule: !this.state.isSchedule
         })
@@ -79,8 +72,7 @@ export default class Home extends Component {
     }
    
   }
-
-
+ 
 
 
 render () {
@@ -133,7 +125,10 @@ render () {
      
     </View>
   )
-
+  var medName= '';
+  if (this.props.med){
+      medName=this.props.med.name;
+  }
   return (
 
     <SideMenu
@@ -145,11 +140,28 @@ render () {
     <View  style={styles.container} toggleSideMenu={this.toggleSideMenu.bind(this)} >
          <Header
                 leftComponent={ { icon: 'menu', color: '#fff', onPress:this.toggleSideMenu.bind(this) }}
-                centerComponent={{ text: 'Community Living Cambridge', style: { color: '#fff', fontWeight: 'bold' } }} 
+                centerComponent={{ text: 'Edit Medication', style: { color: '#fff', fontWeight: 'bold' } }} 
                 rightComponent={{ icon: 'home', color: '#fff', onPress:  ()=>this.logout()}}
                 style={{height:50}}
                 />
-         <Cards />
+          <View style={styles.container}>
+            {/*<ScrollView>*/}
+             <View style={styles.form}>
+             
+            
+            <FormLabel labelStyle={{color: '#fff'}}>Medication Name:</FormLabel>
+            <FormInput 
+                value={medName}
+                placeholder='Enter medication Name'  
+                placeholderTextColor={'#AAAAAA'} 
+                containerStyle={styles.FormInput} 
+                inputStyle={{color: '#fff'}} 
+                onChangeText={(medName) => this.setState({medName})}/>
+             {/*<FormValidationMessage>{this.state.emptyFName}</FormValidationMessage>   */}
+
+            </View>
+            {/*</ScrollView>*/}
+        </View>
        
     </View>
 
