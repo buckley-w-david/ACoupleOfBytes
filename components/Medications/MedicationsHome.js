@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, Image, KeyboardAvoidingView, TouchableOpacity, navigation} from 'react-native';
+import {View, Text, StyleSheet, Image,Button, KeyboardAvoidingView, TouchableOpacity, navigation} from 'react-native';
 import SideBar from '../sideBar/drawer';
 import {  SideMenu, List, ListItem , Header } from 'react-native-elements';
 import Login from '../Login/Login';
 import {list, MenuComponent} from '../navigationList';
 import Home from '../Home/Home';
-
+import EditMeds from './EditMeds';
+import Schedule from '../Schedule/Schedule';
 export default class MedsHome extends Component {
  constructor (props) {
   super(props)
     this.state = {
         isLogout: false,
+        isEditMed: false,
+        medSelected:{},
+        isSchedule: false
     }
   }
 
@@ -65,12 +69,39 @@ export default class MedsHome extends Component {
         })
         break;  
     }
-    console.log("here");
   }
 
-
+  editMed(med){
+    console.log("here it is ");
+     this.setState({
+          isEditMed: !this.state.isEditMed
+      })
+      this.setState({
+          medSelected: med
+      })
+  }
+  schedule(){
+     this.setState({
+          isSchedule: !this.state.isSchedule
+      })
+  }
 
 render () {
+
+      const Medications = [
+      {
+        name: 'Adderall',
+        subtitle: 'Every day at 1:00pm'
+      },
+      {
+        name: 'Dexedrine',
+        subtitle: 'twice a day 8AM and 4PM'
+      },
+      {
+        name: 'Haldol',
+        subtitle: 'Everyday at 1:00'
+      },
+      ]
     if(this.state.isLogout){
       return <Login />
     }
@@ -81,9 +112,9 @@ render () {
     //   return <Notifications />
     // }
 
-    // if(this.state.isSchedule){
-    //   return <Schedule />
-    // }
+    if(this.state.isSchedule){
+      return <Schedule />
+    }
     if(this.state.isMeds){
       return <MedsHome />
     }
@@ -93,10 +124,13 @@ render () {
     // if(this.state.isFaF){
     //   return <FaF />
     // }
-
-    
+    if(this.state.isEditMed){
+      return <EditMeds
+        med= {this.state.medSelected}
+       />
+    }
   const MenuComponent = (
-    <View style={{flex: 1, backgroundColor: '#ededed', paddingTop: 50}}>
+    <View style={{flex: 1, backgroundColor: '#3f4144', paddingTop: 50}}>
       <List containerStyle={{marginBottom: 20}}>
       {
         
@@ -107,6 +141,7 @@ render () {
                 key={i}
                 title={l.name}
                 onPress= {()=>this.navigationPushed(l.shortCut)}
+                avatarOverlayContainerStyle= {{backgroundColor: '#fff'}}
             />))
           
        
@@ -126,16 +161,48 @@ render () {
     <View  style={styles.container} toggleSideMenu={this.toggleSideMenu.bind(this)} >
          <Header
                 leftComponent={ { icon: 'menu', color: '#fff', onPress:this.toggleSideMenu.bind(this) }}
-                centerComponent={{ text: 'Community Living Cambridge', style: { color: '#fff', fontWeight: 'bold' } }} 
+                centerComponent={{ text: 'Medications', style: { color: '#fff', fontWeight: 'bold' } }} 
                 rightComponent={{ icon: 'home', color: '#fff', onPress: ()=>this.logout()}}
                 style={{height:50}}
-                />
-         
+                />   
+
+  <List  >
+  {
+    Medications.map((l, i) => (
+      <ListItem
+        //roundAvatar
+        //avatar={{uri:l.avatar_url}}
+        key={i}
+        subtitle={l.subtitle}
+        title={l.name}
+        onPress={()=>this.editMed(l)}
+      />
+    ))
+  }
+</List>
+  
+    {this.state.isFirstMed && 
+      <View style={styles.page}>
+          <Image resizeMode="contain" style={styles.logo} source={require('../images/firstmedbadge.png')} />
+      </View>         
+    }
+
+            
+   
+</View>
+     <View style={styles.bottonMenu}>
+        <TouchableOpacity style={styles.buttonContainerMeds } onPress={()=>this.editMed()}>
+            <Text  style={styles.buttonText}>Add New Meds</Text>
+        </TouchableOpacity> 
+        <TouchableOpacity style={styles.buttonContainer } onPress={()=>this.schedule()}>
+            <View  style={styles.schedule}>
+              <Text  style={styles.buttonText}>Schedule</Text>
+              <Image resizeMode="contain" style={styles.logo} source={require('../images/calendar.png')} />
+            </View> 
+        </TouchableOpacity> 
+
+     </View> 
        
-    </View>
-    
-     
-    
     </SideMenu>
     
 
@@ -149,13 +216,51 @@ const styles =StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#2c3e50',
-        
+
     },
     logo: {
+      flex:1,
+        //alignItems: 'center',
+        //position: 'absolute',
+        //justifyContent: 'center',
+      width: 20,
+      height: 20,
+       // paddingVertical: 30,
+
+    },
+    page:{
         alignItems: 'center',
         position: 'absolute',
-        width: 50,
-        height: 50,
-        paddingVertical: 30
     },
+    buttonContainer:{
+        backgroundColor: '#2980b6',
+        paddingVertical: 15,
+        width: 100,
+        flex:1
+    },
+    buttonContainerMeds:{
+        backgroundColor: '#102342',
+        paddingVertical: 15,
+        width: 100,
+        flex:1
+    },
+    buttonText:{
+        color: '#fff',
+        textAlign: 'center',
+        fontWeight: '700'
+    },
+    bottonMenu:{
+       //  flex: 0,
+        flexDirection: 'row',
+        backgroundColor: '#2c3e50',
+    },
+    schedule:{
+      flexDirection: 'row',
+      alignItems: 'center',
+      //position: 'absolute',
+      textAlign: 'center',
+    }
+
+
+   
 });

@@ -1,29 +1,49 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, Image, KeyboardAvoidingView, TouchableOpacity, Header ,StatusBar} from 'react-native';
+import {View, Text, StyleSheet, Image, KeyboardAvoidingView, TouchableOpacity, Header ,StatusBar, Alert} from 'react-native';
 import { Card, ListItem, Button } from 'react-native-elements';
 import * as Progress  from 'react-native-progress';
 export default class Cards extends Component {
     
+    recoredMeds(medName){
+        // update db with no OverDue meds
+        this.OverDueMeds(true);
+          Alert.alert(
+            'Record Medication',
+            medName,
+            [
+                {text: 'taken', onPress: () => console.log('Ask me later pressed')},
+               {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                //{text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            // { cancelable: false }
+        )
+    }
+
     OverDueMeds(overDue){
+
+
         if (overDue==false){
             return;
         }
         return(
+            
                <Card
-                        title='Schedule - Past Due'
-                        containerStyle={styles.card}
-                        //image={require('../images/logo.png')}
-                        >
-                        <Text style={{marginBottom: 10}}>
-                            This medication is past due should have been taken yesterday
-                        </Text>
-                        <Button
-                            icon={{name: 'code'}}
-                            backgroundColor='#03A9F4'
-                            fontFamily='FontAwesome'
-                            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                            title='Record NOW' />
-                    </Card>
+                title='Schedule - Past Due'
+                containerStyle={styles.card}
+                //image={require('../images/logo.png')}
+                >
+                <Text style={{marginBottom: 10}}>
+                    This medication is past due should have been taken yesterday
+                </Text>
+                <Button
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    fontFamily='FontAwesome'
+                    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                    title='Record NOW'
+                    onPress={()=>this.recoredMeds('Adderal')} />
+             </Card>
+                 
         );
     }
 
@@ -35,12 +55,11 @@ export default class Cards extends Component {
                       points: 'Level 1 - earn points by taking your meds on time'  
                     }
             )
-
         }
         else{
             return(
                 text={nextDue: 'Next med is <med> and do at <Time:Time> <AM/PM>',
-                      points: 'Level 1;'  
+                      points: 'Level 1:'  
                     }
             )
         }
