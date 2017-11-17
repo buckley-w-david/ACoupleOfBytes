@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'CLC_FASD.apps.ClcFasdConfig'
+    'CLC_FASD.apps.ClcFasdConfig',
 ]
 
 MIDDLEWARE = [
