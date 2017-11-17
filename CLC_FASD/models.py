@@ -10,8 +10,8 @@ class Users(models.Model):
 	password = models.CharField(max_length=50)
 	sessionKey = models.CharField(max_length=50)
 	userType = models.CharField(max_length=10,choices=uType,default='Participant')
-	medication = models.CharField(max_length=50)
-	connection = models.CharField(max_length=50)
+	medication = models.ManyToManyField("Medication")
+	connection = models.ManyToManyField("Connections")
 
 class Medication(models.Model):
 	daysOfWeek=(('Monday','Monday'),('Tuesday','Tuesday'), \
@@ -20,8 +20,8 @@ class Medication(models.Model):
 	name = models.CharField(max_length=50)
 	time = models.TimeField(blank=True,auto_now_add=False)
 	day = models.CharField(max_length=10,choices=daysOfWeek)
-	user = models.ForeignKey(Users,related_name='medication')
+	#user = models.ForeignKey(Users,related_name='b')
 
 class Connections(models.Model):
 	username = models.CharField(max_length=50)
-	connection = models.ForeignKey(Users,related_name='connection')
+	#connection = models.ForeignKey(Users,related_name='a')
