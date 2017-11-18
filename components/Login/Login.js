@@ -59,7 +59,7 @@ export default class Login extends Component {
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <View style={styles.container}>
                     <View style={styles.loginContainer}>
-                        <Image resizeMode="contain" style={styles.logo} source={require('../images/logo.jpg')} />
+                        <Image resizeMode="contain" style={styles.logo} source={require('../images/ComLifeLogo.png')} />
                     </View>
                     
                         <View style={styles.containerForm}>
@@ -108,8 +108,8 @@ const styles =StyleSheet.create({
     },
     logo: {
         position: 'absolute',
-        width: 600,
-        height: 200
+        width: 700,
+        height: 300
     },
     containerForm: {
      padding: 20

@@ -5,12 +5,17 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   TouchableOpacity,
+  TouchableHighlight,
   KeyboardAvoidingView,
   ScrollView
 } from 'react-native';
-import { FormLabel, FormInput,Header,CheckBox, FormValidationMessage } from 'react-native-elements'
-import bcrypt from 'react-native-bcrypt'
+import { FormLabel, FormInput,Header,CheckBox, FormValidationMessage } from 'react-native-elements';
+import bcrypt from 'react-native-bcrypt';
+import Home from '../Home/Home';
+import TermsAndConditions from '../TermsAndConditions';
+
 
 
 export default class createAccount extends Component {
@@ -18,6 +23,9 @@ export default class createAccount extends Component {
         super(props);
         
         this.state = {
+            isBack:false,
+            isTandC:false,
+            isCreated:false,
             fname: '',
             lname: '',
             email: '',
@@ -115,7 +123,7 @@ checkTandC(){
 }
 
 submitButton(){
-    //check if user name if avaiable
+    //check if user name is avaiable
     //check if password is vaild   
     
     var salt = bcrypt.genSaltSync(10);
@@ -132,20 +140,42 @@ submitButton(){
             ffUser:this.state.ffUser,  
         }
         // send to back-end
-    }
-    
+         this.setState({
+            isCreated: true,
+        })  
+
+    }   
+}
+goBack(){
+     this.setState({
+        isBack: true,
+    })  
+}
+goToTandC(){
+     this.setState({
+        isTandC: true,
+    })  
 }
 
   render() {
-   
+    if(this.state.isCreated){
+        return <Home />
+    }
+    if(this.state.isBack){
+        return <Login />
+    }
+        if(this.state.isTandC){
+        return <TermsAndConditions />
+    }
     return (
        
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
-            <Header
-                leftComponent={{ icon: 'menu', color: '#fff' }} 
-                centerComponent={{ text: 'Create an Account', style: { color: '#fff', fontWeight: 'bold' } }} 
-                style={{height:50 }}
-                />
+            <View style={{height:50, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingVertical: 30}}>
+                <TouchableOpacity  style={styles.logo2 }onPress={() => this.goBack()}>
+                    <Image resizeMode="contain" style={styles.logo2} source={require('../images/back.png')} />
+                </TouchableOpacity >
+                <Text style= {{color: '#fff', fontWeight: 'bold', textAlign: 'center', fontSize: 20, flex:1}}>Create an Account </Text>
+            </View>  
         <View style={styles.container}>
              <ScrollView>
             <View style={styles.form}>
@@ -163,7 +193,7 @@ submitButton(){
             
             <FormLabel labelStyle={{color: '#fff'}}>First Name</FormLabel>
             <FormInput 
-                placeholder='First Name'  
+                placeholder='Enter Your First Name...'  
                 placeholderTextColor={'#AAAAAA'} 
                 containerStyle={styles.FormInput} 
                 inputStyle={{color: '#fff'}} 
@@ -172,7 +202,7 @@ submitButton(){
             
             <FormLabel labelStyle={{color: '#fff'}}>Last Name</FormLabel>
             <FormInput 
-                placeholder='Last Name'  
+                placeholder='Enter Your Last Name...'  
                 placeholderTextColor={'#AAAAAA'} 
                 containerStyle={styles.FormInput} 
                 inputStyle={{color: '#fff'}} 
@@ -181,7 +211,7 @@ submitButton(){
 
             <FormLabel labelStyle={{color: '#fff'}}>Email Address</FormLabel>
             <FormInput 
-                placeholder='Email Address' 
+                placeholder='Enter Your Email Address...' 
                 placeholderTextColor={'#AAAAAA'} 
                 containerStyle={styles.FormInput} 
                 inputStyle={{color: '#fff'}} 
@@ -193,7 +223,7 @@ submitButton(){
             <View style={styles.form}>
             <FormLabel labelStyle={{color: '#fff'}}>Username</FormLabel>
             <FormInput 
-                placeholder='Username'   
+                placeholder='Create a Username'   
                 placeholderTextColor={'#AAAAAA'}
                 containerStyle={styles.FormInput} 
                 inputStyle={{color: '#fff'}} 
@@ -202,7 +232,7 @@ submitButton(){
 
             <FormLabel labelStyle={{color: '#fff'}}>Password</FormLabel>
             <FormInput 
-                placeholder='Password' 
+                placeholder='Enter a Password' 
                 secureTextEntry 
                 placeholderTextColor={'#AAAAAA'} 
                 containerStyle={styles.FormInput} 
@@ -212,7 +242,7 @@ submitButton(){
 
             <FormLabel labelStyle={{color: '#fff'}}>Confirm Password</FormLabel>
             <FormInput 
-                placeholder='Comfirm Password' 
+                placeholder='Re-enter the password' 
                 secureTextEntry 
                 placeholderTextColor={'#AAAAAA'} 
                 containerStyle={styles.FormInput} 
@@ -231,10 +261,12 @@ submitButton(){
                 checkedTitle='I accept the Terms and Coniditions'
             />
             
-             
+              
              <TouchableOpacity style={styles.buttonContainer } onPress={()=>this.submitButton()}>
                 <Text  style={styles.buttonText}>Sumbit</Text>
             </TouchableOpacity> 
+
+            <Text  style={styles.text}  onPress={()=>this.goToTandC()} >Terms and Conditions</Text> 
             </View>
             </ScrollView>
         </View>
@@ -254,7 +286,6 @@ const styles =StyleSheet.create({
         alignItems: 'center',
         flexGrow: 1,
         justifyContent: 'center',
-        padding: 20
     },
      buttonContainer:{
         backgroundColor: '#287BAF',
@@ -275,6 +306,18 @@ const styles =StyleSheet.create({
     },
     CheckBoxTextStyle:{
        color: '#fff', 
-    }
+    },
+    text:{
+        color: '#fff',
+        textAlign: 'center',
+        fontWeight: '700',
+        paddingVertical: 5
+    },
+     logo2: {
+        alignItems: 'center',
+        width: 20,
+        height: 20,
+        
+    },
 
 });
