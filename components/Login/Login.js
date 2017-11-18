@@ -14,6 +14,7 @@ export default class Login extends Component {
         
         this.state = {
             username: '',
+            data:{},
             password: '',
             isLogin: false,
             isCreateAccout:false,
@@ -32,11 +33,21 @@ export default class Login extends Component {
         return DBPass==hash;
         
     }
-
+    login(){
+         $.ajax({
+            url: this.props.url,
+            datatype: 'json',
+            cache: false,
+            success: function(data) {
+                this.setState({data: data});
+            }.bind(this)
+        }
+    }
     onButtonPress(state, button){
       
        if (button=='login'){
             if(this.checkCredientals()){
+                this.login();
                 this.setState({isLogin:true})// create session
             } else{
                 this.setState({errorMessage:'username or password is incorrect '})
