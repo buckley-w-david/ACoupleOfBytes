@@ -1,48 +1,52 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.shortcuts import render
 
-# Create your views here.
 from django.http import HttpResponse
 from CLC_FASD import models
+from django.utils.timezone import now, localtime
 
+# Create your views here.
 
 def index(request):
-	test = MedicationCalls()
-	test.addMedication("adderall","10mg","10:00","Friday")
-	#test.removeMedication("","")
-	test.removeMedication("adderall","10mg")
-	#test.getMedications()
+#	user = models.Users()
+#	user.name="asd"
+#	user.password="123"
+#	user.sessionKey="abcdefg"
+#	user.userType="Participant"
+#	user.save()
+#	addMedication("adderall","10mg","10:00","Friday","abcdefg")
+#	removeMedication("adderall","10mg","abcdefg")
+
 	return HttpResponse("Hello, world. You're at the CLC FASD index.")
 
+def addMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey):
+	medication = models.Medication()
+	medication.name= medicationName
+	medication.dosage = dosage
+	medication.time = time
+	medication.day = daysOfWeek
+	medication.taken=False
+	medication.save()
+	models.Users.objects.get(sessionKey=sessionKey).medication.add(medication)
 
-class MedicationCalls():
-	def __init__(self):
-		self.medicationName=""
-		self.time=0
-		self.daysOfWeek=""
-		self.user=""
+def removeMedication(medicationName,dosage,time,sessionKey):
+	instance = models.Users.objects.get(sessionKey=sessionKey)
+	instanceMed = instance.medication.get(name=medicationName,dosage=dosage,time=time).delete()
 
-	def addMedication(self,medicationName,dosage,time,daysOfWeek):
-		medication = models.Medication()
-		medication.name= medicationName
-		medication.dosage = dosage
-		medication.time = time
-		medication.day = daysOfWeek
-		medication.save()
+def editMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey):
+	self.removeMedication(medicationName,dosage,time,sessionKey)
+	self.addMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey)
 
-	def removeMedication(self,medicationName,dosage):
-		instance = models.Medication.objects.get(name=medicationName, dosage=dosage)
-		instance.delete()
+def getMedications(sessionKey):
+	instance = models.Users.get(sessionKey=sessionKey)
+	return instance.medication
 
-	def editMedication(self,medicationName,dosage,time,daysOfWeek):
-		self.removeMedication(medicationName,user)
-		self.addMedication(medicationName,dosage,time,daysOfWeek)
+def getPastDue(sessionKey):
+	instance = models.Users.get(sessionKey=sessionKey)
+	time = localtime(now()).time()
+	for medication in instance.medication:
+		if(!(medication.taken) && medication.time<=time):
+			yield medication
 
-	def getMedications(self,user):
-		instance = models.Medication.objects.all()
-		ret = []
-		for medications in instance:
-			ret.append(medications)
-		return ret
+

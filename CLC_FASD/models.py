@@ -22,6 +22,7 @@ class Medication(models.Model):
 	dosage = models.CharField(max_length=20,default="0mg")
 	time = models.TimeField(blank=True,auto_now_add=False)
 	day = models.CharField(max_length=10,choices=daysOfWeek)
+	taken = models.BooleanField(default=False)
 	#user = models.ForeignKey(Users,related_name='b')
 
 class Connections(models.Model):

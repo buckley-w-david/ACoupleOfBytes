@@ -1,33 +1,30 @@
-from .CLC_FASD.models import Medication
-#from django.core.managament.base import BaseCommand, CommandError
+from CLC_FASD import models
 
-class MedicationCalls():
-	def __init__(self):
-		self.medicationName=""
-		self.time=0
-		self.daysOfWeek=""
-		self.user=""
+def addMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey):
+	medication = models.Medication()
+	medication.name= medicationName
+	medication.dosage = dosage
+	medication.time = time
+	medication.day = daysOfWeek
+	medication.taken=False
+	medication.save()
+	models.Users.objects.get(sessionKey=sessionKey).medication.add(medication)
 
-	def addMedication(self,medicationName,dosage,time,daysOfWeek):
-		medication = models.Medication()
-		medication.medicationName = medicationName
-		medication.dosage = dosage
-		medication.time = time
-		medication.daysOfWeek = daysOfWeek
-		#medication.user = user
-		medication.save()
+def removeMedication(medicationName,dosage,time,sessionKey):
+	instance = models.Users.objects.get(sessionKey=sessionKey)
+	instanceMed = instance.medication.get(name=medicationName,dosage=dosage,time=time).delete()
 
-	def removeMedication(self,medicationName,user):
-		instance = models.Medication.objects.get(user=user, medicationName=medicationName)
-		instance.delete()
+def editMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey):
+	self.removeMedication(medicationName,dosage,time,sessionKey)
+	self.addMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey)
 
-	def editMedication(self,medicationName,dosage,time,daysOfWeek,user):
-		self.removeMedication(medicationName,user)
-		self.addMedication(medicationName,dosage,time,daysOfWeek,user)
+def getMedications(sessionKey):
+	instance = models.Users.get(sessionKey=sessionKey)
+	return instance.medication
 
-	def getMedications(self,user):
-		instance = models.Medication.objects.all.filter(user=user)
-		ret = []
-		for medications in instance:
-			ret.append(medications)
-		return ret
+def getPastDue(sessionKey):
+	instance = models.Users.get(sessionKey=sessionKey)
+	time = localtime(now()).time()
+	for medication in instance.medication:
+		if(!(medication.taken) && medication.time<=time):
+			yield medication
