@@ -2,51 +2,91 @@
 from __future__ import unicode_literals
 from django.shortcuts import render
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseForbidden
+#from django.views.defaults import permission_denied, bad_request
+
 from CLC_FASD import models
-from django.utils.timezone import now, localtime
+from CLC_FASD.APICalls import medication, account, verification
+
+import json
+
 
 # Create your views here.
-
 def index(request):
-#	user = models.Users()
-#	user.name="asd"
-#	user.password="123"
-#	user.sessionKey="abcdefg"
-#	user.userType="Participant"
-#	user.save()
-#	addMedication("adderall","10mg","10:00","Friday","abcdefg")
-#	removeMedication("adderall","10mg","abcdefg")
-
 	return HttpResponse("Hello, world. You're at the CLC FASD index.")
 
-def addMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey):
-	medication = models.Medication()
-	medication.name= medicationName
-	medication.dosage = dosage
-	medication.time = time
-	medication.day = daysOfWeek
-	medication.taken=False
-	medication.save()
-	models.Users.objects.get(sessionKey=sessionKey).medication.add(medication)
+def login(request):
+	if request.method == 'POST':
+		creds = json.loads(request.body)
+		response = loginFunctions.login(creds['username'], creds['password'])
+		if response:
+			return JsonResponse({"session_key": response})
+		else:
+			return HttpResponseForbidden("Bad username or password")
+	else:
+		return HttpResponseBadRequest('Expected POST request')
 
-def removeMedication(medicationName,dosage,time,sessionKey):
-	instance = models.Users.objects.get(sessionKey=sessionKey)
-	instanceMed = instance.medication.get(name=medicationName,dosage=dosage,time=time).delete()
+def logout(request):
+	if request.method == 'GET':
+		try:
+			session = _session(request)
+			response = loginFunctions.logout(session)
+			if response:
+				return HttpResponse()
+			else:
+				return HttpResponseForbidden('Invalid Session Key')
 
-def editMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey):
-	self.removeMedication(medicationName,dosage,time,sessionKey)
-	self.addMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey)
+		except KeyError:
+			return HttpResponseForbidden("No session key")
+	else:
+		return HttpResponseBadRequest('Expected GET request')
 
-def getMedications(sessionKey):
-	instance = models.Users.get(sessionKey=sessionKey)
-	return instance.medication
+def signup(request):
+	if request.method == 'POST':
+		return HttpResponse(status=501)
+	else:
+		return HttpResponseBadRequest('Expected POST request')
 
-def getPastDue(sessionKey):
-	instance = models.Users.get(sessionKey=sessionKey)
-	time = localtime(now()).time()
-	for medication in instance.medication:
-		if(!(medication.taken) && medication.time<=time):
-			yield medication
+def meds(request):
+	return HttpResponse(status=501)
 
+	try:
+		session = _session(request)
+	except KeyError:
+		return HttpResponseForbidden("No session key")
 
+	if not verification.validSession("test"):
+		return HttpResponseForbidden("Invalid session key")
+
+	return HttpResponse(status=501)
+	if request.method == 'GET':
+		pass
+	elif request.method == 'POST':
+		pass
+	elif request.method == 'PATCH':
+		pass
+	elif request.method == 'DELETE':
+		pass
+	else:
+		return HttpResponseBadRequest('Expected one of [POST, GET, PATCH, DELETE] request')
+
+	return HttpResponse("meds Endpoint")
+
+def due_meds(request):
+	if request.method == 'GET':
+		return HttpResponse(status=501)
+	else:
+		return HttpResponseBadRequest('Expected GET request')
+
+	return HttpResponse("Due Endpoint")
+
+def next_meds(request):
+	if request.method == 'GET':
+		return HttpResponse(status=501)
+	else:
+		return HttpResponseBadRequest('Expected GET request')
+
+	return HttpResponse("Next Endpoint")
+
+def _session(request):
+	return request.META['SESSION_KEY']
