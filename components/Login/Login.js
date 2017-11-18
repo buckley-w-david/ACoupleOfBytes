@@ -34,14 +34,7 @@ export default class Login extends Component {
         
     }
     login(){
-         $.ajax({
-            url: this.props.url,
-            datatype: 'json',
-            cache: false,
-            success: function(data) {
-                this.setState({data: data});
-            }.bind(this)
-        }
+       
     }
     onButtonPress(state, button){
       
