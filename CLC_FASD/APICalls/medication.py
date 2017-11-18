@@ -1,4 +1,5 @@
 from CLC_FASD import models
+from django.utils.timezone import now, localtime
 
 def addMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey):
 	medication = models.Medication()
