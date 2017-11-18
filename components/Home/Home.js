@@ -7,7 +7,7 @@ import Cards from './cards';
 import MedsHome from '../Medications/MedicationsHome';
 import {list, MenuComponent} from '../navigationList';
 import Schedule from '../Schedule/Schedule';
-
+import Logo from '../header';
 export default class Home extends Component {
  constructor (props) {
   super(props)
@@ -145,7 +145,7 @@ render () {
     <View  style={styles.container} toggleSideMenu={this.toggleSideMenu.bind(this)} >
          <Header
                 leftComponent={ { icon: 'menu', color: '#fff', onPress:this.toggleSideMenu.bind(this) }}
-                centerComponent={{ text: 'Community Living Cambridge', style: { color: '#fff', fontWeight: 'bold' } }} 
+                centerComponent={<Logo/>} 
                 rightComponent={{ icon: 'home', color: '#fff', onPress:  ()=>this.logout()}}
                 style={{height:50}}
                 />
