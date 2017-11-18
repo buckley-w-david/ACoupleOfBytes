@@ -27,5 +27,5 @@ def getPastDue(sessionKey):
 	instance = models.Users.get(sessionKey=sessionKey)
 	time = localtime(now()).time()
 	for medication in instance.medication:
-		if(!(medication.taken) && medication.time<=time):
+		if(not medication.taken and medication.time<=time):
 			yield medication
