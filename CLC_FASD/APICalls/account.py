@@ -1,4 +1,4 @@
-from CLC_FASD.models import Users
+from CLC_FASD.models import User
 import uuid
 
 #username, password
