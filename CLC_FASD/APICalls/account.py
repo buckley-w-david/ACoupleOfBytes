@@ -31,6 +31,13 @@ def getIdBySessionKey(sessionKey):
         return User.objects.get(sessionKey=sessionKey).id
     else:
         return False
+
+#session key
+def getUsernameById(id):
+    if User.objects.filter(id=id).exists():
+        return User.objects.get(id=id).username
+    else:
+        return False
     
 #username, password, sessionKey, userType
 def signup(username, password, firstname, lastname, email):
