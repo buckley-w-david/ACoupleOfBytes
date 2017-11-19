@@ -1,31 +1,41 @@
 from CLC_FASD import models
 from django.utils.timezone import now, localtime
+from django.db.models import Max
 
-def addMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey):
+def addMedication(medicationName, dosage, time, daysOfWeek, taken, medId, userId):
 	medication = models.Medication()
-	medication.name= medicationName
+	medication.name = medicationName
 	medication.dosage = dosage
 	medication.time = time
 	medication.day = daysOfWeek
-	medication.taken=False
+	medication.taken = False
+	medication.medId = medId
+	medication.user = models.User.objects.get(id=userId)
+
 	medication.save()
-	models.UserC.objects.get(sessionKey=sessionKey).medication.add(medication)
 
-def removeMedication(medicationName,dosage,time,sessionKey):
-	instance = models.User.objects.get(sessionKey=sessionKey)
-	instanceMed = instance.medication.get(name=medicationName,dosage=dosage,time=time).delete()
+	return medication
 
-def editMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey):
-	self.removeMedication(medicationName,dosage,time,sessionKey)
-	self.addMedication(medicationName,dosage,time,daysOfWeek,taken,sessionKey)
+def removeMedication(medicationId, userId):
+	instance = models.User.objects.get(id=userId)
+	instance.medication_set.get(medId=medicationId).delete()
 
-def getMedications(sessionKey):
-	instance = models.User.get(sessionKey=sessionKey)
-	return instance.medication
+'''def editMedication(medicationId, medicationName, dosage, time, daysOfWeek, taken, userId):
+	removeMedication(medicationId, userId)
+	addMedication(medicationName, dosage, time, daysOfWeek, taken, userId)'''
 
-def getPastDue(sessionKey):
-	instance = models.User.get(sessionKey=sessionKey)
-	time = localtime(now()).time()
-	for medication in instance.medication:
-		if(not medication.taken and medication.time<=time):
+def getMedications(userId):
+	instance = models.User.get(id=userId)
+	return instance.medication_set.all()
+
+def getPastDue(userId):
+	instance = models.User.get(id=userId)
+	current = localtime(now())
+	day = current.weekday()
+
+	for medication in instance.medication_set.all():
+		if (not medication.taken and medication.time <= time and day == medication.day):
 			yield medication
+
+def newMedId():
+	return Medication.objects.all().aggregate(Max('medId'))+1
