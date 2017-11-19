@@ -35,3 +35,12 @@ def getUsernameBySessionKey(sk):
         return str(un)
     else:
         return False
+    
+#uType, username, password, sessionKey, userType, medication, connection 
+def userReg(ut, un, pw, sk, ust, med, conn):
+    if User.objects.filter(username=un, userType=ust).exists():
+        return False
+    else:
+        newUser = User.objects.create(uType=ut, username=un, password=pw, sessionKey=sk, userType=ust,  medication=med, connection=conn)
+        newUser.save()
+        return newUser
