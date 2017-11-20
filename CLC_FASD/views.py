@@ -46,7 +46,7 @@ def logout(request):
 			id = account.getIdBySessionKey(sessionKey)
 
 			if account.logout(id):
-				return JsonResponse(status=OK)
+				return JsonResponse({}, status=OK)
 			else:
 				return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 		except KeyError:
@@ -66,7 +66,7 @@ def signup(request):
 			email = account_info['email']
 
 			if (account.signup(username, password, firstname, lastname, email)):
-				return JsonResponse(status=OK)
+				return JsonResponse({}, status=OK)
 			else:
 				return JsonResponse({"error": "User with username={} already exists".format(username)}, status=BAD_REQUEST)
 		except KeyError:
@@ -115,7 +115,7 @@ def meds(request):
 	else:
 		return JsonResponse({"error": 'Expected one of [POST, GET] request'}, status=BAD_REQUEST)
 
-	return JsonResponse(status=OK)
+	return JsonResponse({}, status=OK)
 
 def _convert(rows):
 	med = {"id": 0, "name": "", "dosage": "", "times": []}
@@ -172,7 +172,7 @@ def med(request, medId):
 	else:
 		return JsonResponse({"error": 'Expected GET request'}, status=BAD_REQUEST)
 
-	return JsonResponse(status=OK)
+	return JsonResponse({}, status=OK)
 
 def due_meds(request):
 	try:
@@ -236,7 +236,7 @@ def take(request, medId):
 	else:
 		return JsonResponse({"error": 'Expected GET request'}, status=BAD_REQUEST)
 
-	return JsonResponse(status=OK)
+	return JsonResponse({}, status=OK)
 
 
 def _session(request):
