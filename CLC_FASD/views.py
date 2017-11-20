@@ -33,11 +33,11 @@ def login(request):
 			if response:
 				return JsonResponse({"session_key": response})
 			else:
-				return HttpResponse("Invalid username or password", status=FORBIDDEN)
+				return JsonResponse({"error": "Invalid username or password"}, status=FORBIDDEN)
 		except json.decoder.JSONDecodeError:
-			return HttpResponse("Invalid JSON string", status=BAD_REQUEST) 
+			return JsonResponse({"error": "Invalid JSON string"}, status=BAD_REQUEST) 
 	else:
-		return HttpResponse('Expected POST request', status=BAD_REQUEST)
+		return JsonResponse({"error": 'Expected POST request'}, status=BAD_REQUEST)
 
 def logout(request):
 	if request.method == 'GET':
@@ -46,13 +46,13 @@ def logout(request):
 			id = account.getIdBySessionKey(sessionKey)
 
 			if account.logout(id):
-				return HttpResponse(status=OK)
+				return JsonResponse(status=OK)
 			else:
-				return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+				return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 		except KeyError:
-			return HttpResponse("Invalid Session Key", status=FORBIDDEN)
+			return JsonResponse({"error": "Invalid Session Key"}, status=FORBIDDEN)
 	else:
-		return HttpResponse('Expected GET request', status=BAD_REQUEST)
+		return JsonResponse({"error": 'Expected GET request'}, status=BAD_REQUEST)
 
 @csrf_exempt
 def signup(request):
@@ -66,15 +66,15 @@ def signup(request):
 			email = account_info['email']
 
 			if (account.signup(username, password, firstname, lastname, email)):
-				return HttpResponse(status=OK)
+				return JsonResponse(status=OK)
 			else:
-				return HttpResponse("User with username={} already exists".format(username), status=BAD_REQUEST)
+				return JsonResponse({"error": "User with username={} already exists".format(username)}, status=BAD_REQUEST)
 		except KeyError:
-			return HttpResponse("Invalid account info", status=BAD_REQUEST)
+			return JsonResponse({"error": "Invalid account info"}, status=BAD_REQUEST)
 		except json.decoder.JSONDecodeError:
-			return HttpResponse("Invalid JSON string", status=BAD_REQUEST) 
+			return JsonResponse({"error": "Invalid JSON string"}, status=BAD_REQUEST) 
 	else:
-		return HttpResponse('Expected POST request', status=BAD_REQUEST)
+		return JsonResponse({"error": 'Expected POST request'}, status=BAD_REQUEST)
 
 def _combine(blobs):
 	medictions = {"medications": []}
@@ -93,11 +93,11 @@ def meds(request):
 	try:
 		sessionKey = _session(request)
 	except KeyError:
-		return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+		return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 
 	id = account.getIdBySessionKey(sessionKey)
 	if (not id):
-		return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+		return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 
 	if request.method == 'GET':
 		user_medications = medication.getMedications(id)
@@ -113,9 +113,9 @@ def meds(request):
 			day, hour, minute, second = time.split(':')
 			medication.addMedication(name, dosage, '{}:{}:'.format(hour, minute, second), int(day), medId, id)
 	else:
-		return HttpResponse('Expected one of [POST, GET, PATCH, DELETE] request', status=BAD_REQUEST)
+		return JsonResponse({"error": 'Expected one of [POST, GET] request'}, status=BAD_REQUEST)
 
-	return HttpResponse(status=OK)
+	return JsonResponse(status=OK)
 
 def _convert(rows):
 	med = {"id": 0, "name": "", "dosage": "", "times": []}
@@ -133,17 +133,17 @@ def med(request, medId):
 	try:
 		sessionKey = _session(request)
 	except KeyError:
-		return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+		return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 
 	id = account.getIdBySessionKey(sessionKey)
 	if (not id):
-		return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+		return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 
 
 	medId = int(medId)
 	med = medication.getMedication(id, medId)
 	if not med.exists():
-		return HttpResponse('Medication {} for {} not found'.format(medId, account.getUsernameById(id)), status=BAD_REQUEST)
+		return JsonResponse({"error": 'Medication {} for {} not found'.format(medId, account.getUsernameById(id))}, status=BAD_REQUEST)
 
 	if request.method == 'GET':
 		return JsonResponse(_convert(med))
@@ -162,50 +162,50 @@ def med(request, medId):
 
 		except (KeyError, TypeError) as e:
 			print(e)
-			return HttpResponse("Bad request data", status=BAD_REQUEST)
+			return JsonResponse({"error": "Bad request data"}, status=BAD_REQUEST)
 		except json.decoder.JSONDecodeError:
-			return HttpResponse("Invalid JSON string", status=BAD_REQUEST)
+			return JsonResponse({"error": "Invalid JSON string"}, status=BAD_REQUEST)
 
 	elif request.method == 'DELETE':
 		medication.removeMedication(medId, id)
 
 	else:
-		return HttpResponse('Expected GET request', status=BAD_REQUEST)
+		return JsonResponse({"error": 'Expected GET request'}, status=BAD_REQUEST)
 
-	return HttpResponse(status=OK)
+	return JsonResponse(status=OK)
 
 def due_meds(request):
 	try:
 		sessionKey = _session(request)
 	except KeyError:
-		return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+		return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 
 	id = account.getIdBySessionKey(sessionKey)
 	if (not id):
-		return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+		return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 
 	if request.method == 'GET':
 		due_medications = medication.getPastDue(id)
 		grouped_meds = itertools.groupby(due_medications, key=lambda m: m.medId)
 		return JsonResponse(_combine(grouped_meds))
 	else:
-		return HttpResponse('Expected GET request', status=BAD_REQUEST)
+		return JsonResponse({"error": 'Expected GET request'}, status=BAD_REQUEST)
 
 def next_meds(request):
 	try:
 		sessionKey = _session(request)
 	except KeyError:
-		return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+		return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 
 	id = account.getIdBySessionKey(sessionKey)
 	if (not id):
-		return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+		return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 
 	if request.method == 'GET':
 		due = medication.getNextDue(id)
 		return JsonResponse({"name": due.name, "dosage": due.dosage, "time": "{}:{}".format(due.day, due.time)})
 	else:
-		return HttpResponse('Expected GET request', status=BAD_REQUEST)
+		return JsonResponse({"error": 'Expected GET request'}, status=BAD_REQUEST)
 
 @csrf_exempt
 def take(request, medId):
@@ -215,17 +215,17 @@ def take(request, medId):
 	try:
 		sessionKey = _session(request)
 	except KeyError:
-		return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+		return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 
 	id = account.getIdBySessionKey(sessionKey)
 	if (not id):
-		return HttpResponse('Invalid Session Key', status=FORBIDDEN)
+		return JsonResponse({"error": 'Invalid Session Key'}, status=FORBIDDEN)
 
 
 	medId = int(medId)
 	med = medication.getMedication(id, medId)
 	if not med.exists():
-		return HttpResponse('Medication {} for {} not found'.format(medId, account.getUsernameById(id)), status=BAD_REQUEST)
+		return JsonResponse({"error": 'Medication {} for {} not found'.format(medId, account.getUsernameById(id))}, status=BAD_REQUEST)
 
 	if request.method == 'PATCH':
 		match = med.filter(day = day, taken=False, time__lte = current.time()).order_by('-time')
@@ -233,8 +233,10 @@ def take(request, medId):
 			instance = match[0]
 			instance.taken = True
 			instance.save()
-	
-	return HttpResponse(status=OK)
+	else:
+		return JsonResponse({"error": 'Expected GET request'}, status=BAD_REQUEST)
+
+	return JsonResponse(status=OK)
 
 
 def _session(request):
