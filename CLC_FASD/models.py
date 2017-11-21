@@ -18,6 +18,16 @@ class User(models.Model):
 	userType = models.CharField(max_length=11, choices=uType, default='Participant')
 	connection = models.ManyToManyField("User", blank=True)
 
+	# Engagement fields
+	maxHealth = models.IntegerField(default=50)
+	currentHealth = models.IntegerField(default=50)
+	badges = models.ManyToManyField("Badge", blank=True, null=True)
+	level = models.IntegerField(default=1)
+	experience = models.IntegerField(default=0)
+
+	currentStreak = models.IntegerField(default=0)
+	logestStreak = models.IntegerField(default=0)
+
 class Medication(models.Model):
 	daysOfWeek = ((0,'Monday'),(1,'Tuesday'),
 		(2,'Wednesday'),(3,'Thursday'),
@@ -32,3 +42,6 @@ class Medication(models.Model):
 	medId = models.IntegerField()
 
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Badge(models.Model):
+	name = models.CharField(max_length=50)
