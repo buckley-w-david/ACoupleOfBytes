@@ -3,9 +3,9 @@
 ENDPOINT="acoupleofbytes.jordonsmith.ca"
 BACKUP="http://ec2-52-37-97-34.us-west-2.compute.amazonaws.com"
 
-curl -s -o /dev/null -d '{"username": "test26", "password": "abcd", "firstname": "dave", "lastname": "buck", "email": "dbuckl02@uoguelph.ca"}' "$BACKUP/signup/" 2>&1
+curl -s -o /dev/null -d '{"username": "test90", "password": "abcd", "firstname": "dave", "lastname": "buck", "email": "dbuckl02@uoguelph.ca"}' "$BACKUP/signup/" 2>&1
 
-RESP=`curl -s -d '{"username": "test26", "password": "abcd"}' "$BACKUP/login/"`
+RESP=`curl -s -d '{"username": "test90", "password": "abcd"}' "$BACKUP/login/"`
 echo "Login Respnse: $RESP" 
 
 SESSION=`echo $RESP | python3 -c "import sys, json; print(json.load(sys.stdin)['session_key'])"`
@@ -28,7 +28,7 @@ curl -s -o /dev/null -H "$HEADER" "$BACKUP/logout/" 2>&1
 echo "Medication list request after logout: `curl -s -H "$HEADER" "$BACKUP/meds/"`"
 echo
 
-RESP=`curl -s -d '{"username": "test26", "password": "abcd"}' "$BACKUP/login/"`
+RESP=`curl -s -d '{"username": "test90", "password": "abcd"}' "$BACKUP/login/"`
 SESSION=`echo $RESP | python3 -c "import sys, json; print(json.load(sys.stdin)['session_key'])"`
 HEADER="SESSION-KEY: $SESSION"
 

@@ -41,13 +41,11 @@ def getPastDue(userId):
 
 	return models.Medication.objects.filter(user=userId, day = day, taken=False, time__lte = current.time())
 
-
 def getNextDue(userId):
 	current = localtime(now())
 	day = current.weekday()
 
 	return models.Medication.objects.filter(user=userId, day = day, time__gte = current.time()).order_by('time')[0]
-
 
 def newMedId():
 	return (models.Medication.objects.all().aggregate(Max('medId'))['medId__max'] or 0)+1
