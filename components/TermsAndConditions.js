@@ -31,7 +31,7 @@ render () {
                 <TouchableOpacity  style={styles.logo2 }onPress={() => this.goBack()}>
                     <Image resizeMode="contain" style={styles.logo2} source={require('./images/back.png')} />
                 </TouchableOpacity >
-                <Text style= {{color: '#fff', fontWeight: 'bold', textAlign: 'center', fontSize: 20, flex:1}}>Create an Account </Text>
+                <Text style= {{color: '#fff', fontWeight: 'bold', textAlign: 'center', fontSize: 20, flex:1}}>Terms and Conditions </Text>
             </View> 
             <View style={{height:50, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingVertical: 30}}>
                 <Logo/>

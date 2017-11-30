@@ -6,17 +6,27 @@ import Login from '../Login/Login';
 import MedsHome from '../Medications/MedicationsHome';
 import {list, MenuComponent} from '../navigationList';
 import Schedule from '../Schedule/Schedule';
+/*import ToggleSwitch from 'toggle-switch-react-native';
+*/
 export default class Home extends Component {
  constructor (props) {
   super(props)
   this.state = {
     isOpen: false,
     medName: this.props.med,
+    isLoggedIn: true,
+    isCreated: false,
 
   }
     this.toggleSideMenu = this.toggleSideMenu.bind(this)
     
   }
+
+  submitButton(){  
+         this.setState({
+        isCreated: true,
+    })  
+}
 
   onSideMenuChange (isOpen) {
     this.setState({
@@ -29,8 +39,26 @@ export default class Home extends Component {
       isOpen: !this.state.isOpen
     })
   }
+  endSession(){
+    console.log('end', this.props.sessionKey);
+    return fetch('http://acoupleofbytes.jordonsmith.ca/logout/', {
+    method: 'GET',
+      headers: {
+        'SESSION-KEY': this.props.sessionKey,// this.props.sessionKey
+      },
+
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({medDue:responseJson})
+            return responseJson;
+        })
+        .catch((error) => {
+            console.log(error);
+        // console.error(error);
+        });
+  }
   logout(){
-    // end session
+    this.endSession();// end session
       this.setState({
       isLogout: !this.state.isLogout
    })
@@ -76,6 +104,13 @@ export default class Home extends Component {
 
 
 render () {
+  if (this.state.isCreated)
+  {
+    return <MedsHome />
+  }
+
+  
+  var medname='current name'+this.props.med;
     if(this.state.isLogout){
       return <Login />
     }
@@ -125,7 +160,11 @@ render () {
      
     </View>
   )
-  var medName= '';
+  var medName= 'Eg Adderall';
+  var medDosage= 'Eg 20 mg';
+  var medTimesPerDay= 'Eg 1';
+  var medDosageTimes= 'Eg 7:00 AM and 3:00 PM';
+
   if (this.props.med){
       medName=this.props.med.name;
   }
@@ -151,17 +190,46 @@ render () {
             
             <FormLabel labelStyle={{color: '#fff'}}>Medication Name:</FormLabel>
             <FormInput 
-                value={medName}
-                placeholder='Enter medication Name'  
+                placeholder={medName}  
+                placeholderTextColor={'#AAAAAA'} 
+                containerStyle={styles.FormInput} 
+                inputStyle={{color: '#fff'}} 
+                onChangeText={(medName) => this.setState({medName})}/>
+             {/*<FormValidationMessage>{this.state.emptyFName}</FormValidationMessage>   */}
+             <FormLabel labelStyle={{color: '#fff'}}>Dosage (include unit):</FormLabel>
+            <FormInput 
+                placeholder={medDosage}  
+                placeholderTextColor={'#AAAAAA'} 
+                containerStyle={styles.FormInput} 
+                inputStyle={{color: '#fff'}} 
+                onChangeText={(medName) => this.setState({medName})}/>
+             {/*<FormValidationMessage>{this.state.emptyFName}</FormValidationMessage>   */}
+             <FormLabel labelStyle={{color: '#fff'}}>Times Per Day:</FormLabel>
+            <FormInput 
+                placeholder={medTimesPerDay}  
+                placeholderTextColor={'#AAAAAA'} 
+                containerStyle={styles.FormInput} 
+                inputStyle={{color: '#fff'}} 
+                onChangeText={(medName) => this.setState({medName})}/>
+             {/*<FormValidationMessage>{this.state.emptyFName}</FormValidationMessage>   */}
+            <FormLabel labelStyle={{color: '#fff'}}>Dosage Time(s):</FormLabel>
+            <FormInput 
+                placeholder={medDosageTimes}  
                 placeholderTextColor={'#AAAAAA'} 
                 containerStyle={styles.FormInput} 
                 inputStyle={{color: '#fff'}} 
                 onChangeText={(medName) => this.setState({medName})}/>
              {/*<FormValidationMessage>{this.state.emptyFName}</FormValidationMessage>   */}
 
+
+             <TouchableOpacity style={styles.buttonContainer } onPress={()=>this.submitButton()}>
+                <Text  style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity> 
+
             </View>
             {/*</ScrollView>*/}
         </View>
+
        
     </View>
 
@@ -180,13 +248,24 @@ const styles =StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#2c3e50',
-        
     },
-    logo: {
+    form: {
         alignItems: 'center',
-        position: 'absolute',
-        width: 50,
-        height: 50,
-        paddingVertical: 30
+        flexGrow: 1,
+        justifyContent: 'center',
+    },
+     buttonContainer:{
+        backgroundColor: '#287BAF',
+        paddingVertical: 15,
+        padding: 20
+    },
+    buttonText:{
+        color: '#fff',
+        textAlign: 'center',
+        fontWeight: '700'
+    },
+    FormInput:{
+        width:275,
+     
     },
 });

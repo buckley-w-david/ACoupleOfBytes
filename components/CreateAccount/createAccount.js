@@ -122,15 +122,43 @@ checkTandC(){
     return(this.state.tAndC);
 }
 
+saveAccount(){
+
+ return fetch('http://acoupleofbytes.jordonsmith.ca/signup/', {
+  method: 'POST',
+//   headers: {
+//     'Accept': 'application/json',
+//     'Content-Type': 'application/json',
+//   },
+  body: JSON.stringify({"username": this.state.username, "password": this.state.pass, "firstname":this.state.fname, "lastname": this.state.lname, "email": this.state.email})
+
+ }).then((response) => response.json())
+      .then((responseJson) => {
+
+          if (responseJson.error){
+                this.setState({usernameError:responseJson.error})
+                return 0;
+            }else{
+                this.setState({isLogin:true})// create session
+                this.setState({sessionKey:responseJson})
+            } 
+        return responseJson;
+      })
+      .catch((error) => {
+          console.log(error);
+       // console.error(error);
+      });
+      
+}
+
 submitButton(){
     //check if user name is avaiable
     //check if password is vaild   
     
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(this.state.pass, salt);
-    console.log(hash);
+    // var salt = bcrypt.genSaltSync(10);
+    // var hash = bcrypt.hashSync(this.state.pass, salt);
+    //console.log(hash);
     if (this.checkIfFilled()&&this.checkEmail()&&this.checkPasswords()&&this.checkTandC()){
-        console.log("create it")
         var user={
             firstName:this.state.fname,
             lastname:this.state.lname,
@@ -140,11 +168,13 @@ submitButton(){
             ffUser:this.state.ffUser,  
         }
         // send to back-end
+        var test=this.saveAccount();
+       
          this.setState({
             isCreated: true,
         })  
 
-    }   
+   }   
 }
 goBack(){
      this.setState({
@@ -158,10 +188,8 @@ goToTandC(){
 }
 
   render() {
-    if(this.state.isCreated){
-        return <Home />
-    }
-    if(this.state.isBack){
+   
+    if(this.state.isBack|| this.state.isCreated) {
         return <Login />
     }
         if(this.state.isTandC){
@@ -263,7 +291,7 @@ goToTandC(){
             
               
              <TouchableOpacity style={styles.buttonContainer } onPress={()=>this.submitButton()}>
-                <Text  style={styles.buttonText}>Sumbit</Text>
+                <Text  style={styles.buttonText}>Submit</Text>
             </TouchableOpacity> 
 
             <Text  style={styles.text}  onPress={()=>this.goToTandC()} >Terms and Conditions</Text> 

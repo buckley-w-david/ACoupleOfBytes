@@ -11,17 +11,21 @@ export default class Cards extends Component {
             'Record Medication',
             medName,
             [
-                {text: 'taken', onPress: () => console.log('Ask me later pressed')},
+                {text: 'Taken', onPress: () => console.log('Taken pressed')},
                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                //{text: 'OK', onPress: () => console.log('OK Pressed')},
+                {text: 'Not Taking', onPress: () => console.log('OK Pressed')},
             ],
             // { cancelable: false }
         )
     }
 
     OverDueMeds(overDue){
-
-
+        
+       // var overDueMedText='This medication is past due should have been taken yesterday';
+       var overDueMedText='Overdue medication can be record here';
+        if (this.props.medDue[0]){
+            overDueMedText=this.props.medDue[0].name+' is past due';
+        }
         if (overDue==false){
             return;
         }
@@ -33,7 +37,7 @@ export default class Cards extends Component {
                 //image={require('../images/logo.png')}
                 >
                 <Text style={{marginBottom: 10}}>
-                    This medication is past due should have been taken yesterday
+                    {overDueMedText}
                 </Text>
                 <Button
                     icon={{name: 'code'}}
@@ -69,7 +73,7 @@ export default class Cards extends Component {
 
     
     render(){
-      const firstLogin=false;
+      const firstLogin=true;
       const overDue=true;
       const textValues=this.firstLoginFunc(firstLogin);
         return(
@@ -95,8 +99,8 @@ export default class Cards extends Component {
                             {textValues.points}
                         </Text>
                         
-                         <Progress.Bar progress={.5} width={300} />
-                        <Text>Value: {100}</Text>
+                         <Progress.Bar progress={.1} width={300} />
+                        <Text>Value: {10}</Text>
                         
 
                     </Card>

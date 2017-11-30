@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Header,SideMenu, List, ListItem  } from 'react-native-elements';
-import {View, Text, TextInput, TouchableOpacity, Button,StyleSheet, Navigator,Image  } from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Button,StyleSheet, Navigator,Image, Alert  } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import {list, MenuComponent} from '../navigationList';
 import Login from '../Login/Login';
+import Home from '../Home/Home';
+
 import MedsHome from '../Medications/MedicationsHome';
 export default class Schedule extends Component {
    
@@ -76,8 +78,26 @@ export default class Schedule extends Component {
     }
    
   }
+  endSession(){
+    console.log('end', this.props.sessionKey);
+    return fetch('http://acoupleofbytes.jordonsmith.ca/logout/', {
+    method: 'GET',
+      headers: {
+        'SESSION-KEY': this.props.sessionKey,// this.props.sessionKey
+      },
+
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({medDue:responseJson})
+            return responseJson;
+        })
+        .catch((error) => {
+            console.log(error);
+        // console.error(error);
+        });
+  }
   logout(){
-    // end session
+    this.endSession();// end session
     this.setState({
         isLogout: !this.state.isLogout
     })
@@ -86,10 +106,15 @@ export default class Schedule extends Component {
     var dateTemp= date.dateString;
         this.setState({
           dateSelected: date.dateString,
-          markedDates:{
-            dateTemp: {selected: true}
-          }
+         
         })
+        Alert.alert(
+          date.dateString,
+          'You have scheduled: 20 mg of Adderall at 1:00 PM, 5 mg of Dexedrine at 8:00 AM and 4:00 PM, and 2 mg of Haldol at 1:00 PM',
+        [
+         {text: 'Okay', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        ]
+        )
         
       console.log(date.dateString, this.state.markedDates);
       return;
@@ -114,9 +139,9 @@ export default class Schedule extends Component {
     if(this.state.isHome){
       return <Home />
     }
-    // if(this.state.isNotifcations){
-    //   return <Notifications />
-    // }
+     /*if(this.state.isNotifcations){
+       return <Notifications />
+     }*/
 
     if(this.state.isSchedule){
       return <Schedule />
@@ -220,7 +245,6 @@ export default class Schedule extends Component {
                     </View> 
                     <View style={styles.container}>
                         <Text style={styles.text}>{this.state.dateSelected}</Text>
-
                     </View>        
                 </View>
           </SideMenu>
