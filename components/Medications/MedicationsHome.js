@@ -29,8 +29,27 @@ export default class MedsHome extends Component {
       isOpen: !this.state.isOpen
     })
   }
+  endSession(){
+    console.log('end', this.props.sessionKey);
+    return fetch('http://acoupleofbytes.jordonsmith.ca/logout/', {
+    method: 'GET',
+      headers: {
+        'SESSION-KEY': this.props.sessionKey,// this.props.sessionKey
+      },
+
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({medDue:responseJson})
+            return responseJson;
+        })
+        .catch((error) => {
+            console.log(error);
+        // console.error(error);
+        });
+  }
+  
   logout(){
-   // end session
+   this.endSession();// end session
       this.setState({
       isLogout: !this.state.isLogout
    })
@@ -72,7 +91,7 @@ export default class MedsHome extends Component {
   }
 
   editMed(med){
-    console.log("here it is ");
+    console.log("here it is ", med);
      this.setState({
           isEditMed: !this.state.isEditMed
       })
@@ -106,17 +125,17 @@ render () {
       return <Login />
     }
     if(this.state.isHome){
-      return <Home />
+      return <Home sessionKey={this.props.sessionKey}/>
     }
     // if(this.state.isNotifcations){
     //   return <Notifications />
     // }
 
     if(this.state.isSchedule){
-      return <Schedule />
+      return <Schedule sessionKey={this.props.sessionKey}/>
     }
     if(this.state.isMeds){
-      return <MedsHome />
+      return <MedsHome sessionKey={this.props.sessionKey}/>
     }
     // if(this.state.isMessages){
     //   return <Messages />
@@ -127,6 +146,7 @@ render () {
     if(this.state.isEditMed){
       return <EditMeds
         med= {this.state.medSelected}
+        sessionKey={this.props.sessionKey}
        />
     }
   const MenuComponent = (
@@ -175,7 +195,7 @@ render () {
         key={i}
         subtitle={l.subtitle}
         title={l.name}
-        onPress={()=>this.editMed(l)}
+        onPress={()=>this.editMed(l.name)}
       />
     ))
   }
@@ -196,7 +216,7 @@ render () {
         </TouchableOpacity> 
         <TouchableOpacity style={styles.buttonContainer } onPress={()=>this.schedule()}>
             <View  style={styles.schedule}>
-              <Text  style={styles.buttonText}>Schedule</Text>
+              <Text  style={styles.buttonText}>     Schedule</Text>
               <Image resizeMode="contain" style={styles.logo} source={require('../images/calendar.png')} />
             </View> 
         </TouchableOpacity> 
@@ -258,7 +278,7 @@ const styles =StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       //position: 'absolute',
-      textAlign: 'center',
+     // textAlign: 'center',
     }
 
 

@@ -19,10 +19,19 @@ export default class Login extends Component {
             isLogin: false,
             isCreateAccout:false,
             errorMessage:'',
+            sessionKey:'',
         };
     }
     
     checkCredientals(){
+        if (this.state.password==''){
+            this.setState({errorMessage:'please enter a password'})
+            return false;
+        }
+        if (this.state.username==''){
+            this.setState({errorMessage: 'Please enter a username'});
+            return false;
+        }
         var DBPass='tt'//get password for username
         var salt = bcrypt.genSaltSync(10);
         var hash = bcrypt.hashSync(this.state.password, salt);
@@ -34,17 +43,33 @@ export default class Login extends Component {
         
     }
     login(){
-       
+        return fetch('http://acoupleofbytes.jordonsmith.ca/login/', {
+        method: 'POST',
+        body: JSON.stringify({"username": this.state.username, "password": this.state.password})
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.error){
+                    this.setState({errorMessage:'Username or Password is incorrect '})
+                    return 0;
+                }else{
+                    console.log(responseJson);
+                    this.setState({isLogin:true})// create session
+                    this.setState({sessionKey:responseJson.session_key})
+                }    
+                return responseJson;
+            })
+            .catch((error) => {
+                console.log(error);
+            // console.error(error);
+            });
     }
     onButtonPress(state, button){
-      
+      this.state.errorMessage='';
        if (button=='login'){
             if(this.checkCredientals()){
-                this.login();
-                this.setState({isLogin:true})// create session
-            } else{
-                this.setState({errorMessage:'username or password is incorrect '})
-            }   
+                this.login();  
+            }  
        } 
        if (button=='CreateAccount'){
            this.setState({isCreateAccout:true})
@@ -54,7 +79,7 @@ export default class Login extends Component {
     render(){
         console.disableYellowBox = true;
         if(this.state.isLogin){
-            return <Home />
+            return <Home  sessionKey={this.state.sessionKey}/>
         }
         if(this.state.isCreateAccout){
             return <CreateAccount />

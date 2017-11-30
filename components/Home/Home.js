@@ -20,6 +20,7 @@ export default class Home extends Component {
     isMeds: false,
     isMessages: false,
     isFaF:false,
+    medDue:[],
   }
     this.toggleSideMenu = this.toggleSideMenu.bind(this)
   }
@@ -35,8 +36,27 @@ export default class Home extends Component {
       isOpen: !this.state.isOpen
     })
   }
+  endSession(){
+    console.log('end', this.props.sessionKey);
+    return fetch('http://acoupleofbytes.jordonsmith.ca/logout/', {
+    method: 'GET',
+      headers: {
+        'SESSION-KEY': this.props.sessionKey,// this.props.sessionKey
+      },
+
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({medDue:responseJson})
+            return responseJson;
+        })
+        .catch((error) => {
+            console.log(error);
+        // console.error(error);
+        });
+  }
   logout(){
     // end session
+      this.endSession();
       this.setState({
       isLogout: !this.state.isLogout
    })
@@ -55,7 +75,6 @@ export default class Home extends Component {
         })
         break;
       case 'schedule':
-      console.log("hereeee")
         this.setState({
           isSchedule: !this.state.isSchedule
         })
@@ -81,24 +100,43 @@ export default class Home extends Component {
   }
 
 
+getMedValues(){
+    return fetch('http://acoupleofbytes.jordonsmith.ca/meds/due/', {
+    method: 'GET',
+      headers: {
+        'SESSION-KEY': this.props.sessionKey,
+      },
 
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            console.log("here ",responseJson);
+            this.setState({medDue:responseJson})
+            return responseJson;
+        })
+        .catch((error) => {
+            console.log(error);
+        // console.error(error);
+        });
+}
 
 render () {
+  
+    //this.getMedValues();
     if(this.state.isLogout){
       return <Login />
     }
     if(this.state.isHome){
-      return <Home />
+      return <Home sessionKey={this.props.sessionKey}/>
     }
     // if(this.state.isNotifcations){
     //   return <Notifications />
     // }
 
     if(this.state.isSchedule){
-      return <Schedule />
+      return <Schedule sessionKey={this.props.sessionKey} />
     }
     if(this.state.isMeds){
-      return <MedsHome />
+      return <MedsHome sessionKey={this.props.sessionKey}/>
     }
     // if(this.state.isMessages){
     //   return <Messages />
@@ -149,7 +187,7 @@ render () {
                 rightComponent={{ icon: 'home', color: '#fff', onPress:  ()=>this.logout()}}
                 style={{height:50}}
                 />
-         <Cards />
+         <Cards medDue={this.state.medDue} />
        
     </View>
 
